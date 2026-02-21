@@ -36,7 +36,7 @@ export function Navbar() {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/logo.png"
+              src="/logo_bg.png"
               alt="Studio Creative Ant Logo"
               width={40}
               height={40}
@@ -84,7 +84,7 @@ export function Navbar() {
           <div className="px-6 py-6">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
               <Image
-                src="/logo.png"
+                src="/logo_bg.png"
                 alt="Studio Creative Ant Logo"
                 width={32}
                 height={32}

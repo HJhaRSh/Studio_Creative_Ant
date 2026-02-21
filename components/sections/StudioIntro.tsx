@@ -5,36 +5,58 @@ import { Section } from '../Section';
 
 export function StudioIntro() {
   return (
-    <Section className="bg-gray-50">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">Our Studio</h2>
-          <div className="space-y-4 text-gray-700 font-body">
-            <p>
-              Studio Creative Ant is an architecture and design practice founded in 2020 by Ar. Anket Tathed, 
-              driven by the pursuit of meaningful, human-centered spaces. Our work explores the relationship 
-              between light, material, and form to create environments that feel timeless and intentional.
-            </p>
-            <p>
-              Each project is approached as a unique response to its context, guided by clarity, 
-              precision, and thoughtful detailing. We believe architecture should not only function 
-              efficiently but also evoke emotion and create a lasting spatial experience.
-            </p>
+    <Section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #EBEBEB 0%, #F0F0F0 40%, #E8E8E8 100%)', boxShadow: '0 -8px 20px rgba(0,0,0,0.08), 0 10px 30px rgba(0,0,0,0.08)' }}>
+      <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(circle at 30% 60%, rgba(0,0,0,0.02) 0%, transparent 60%), radial-gradient(circle at 70% 40%, rgba(0,0,0,0.01) 0%, transparent 60%)' }}></div>
+      <div className="relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div style={{ animation: 'slideInLeft 0.8s ease-out' }}>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-1 h-10 bg-gradient-to-b from-black to-transparent"></div>
+              <h2 className="section-title font-heading text-4xl md:text-5xl font-bold">Our Studio</h2>
+            </div>
+            <div className="space-y-5 text-gray-800 font-body leading-relaxed">
+              <p className="text-lg">
+                Studio Creative Ant is an architecture and design practice founded in 2020 by Ar. Anket Tathed, 
+                driven by the pursuit of meaningful, human-centered spaces. Our work explores the relationship 
+                between light, material, and form to create environments that feel timeless and intentional.
+              </p>
+              <p className="text-lg">
+                Each project is approached as a unique response to its context, guided by clarity, 
+                precision, and thoughtful detailing. We believe architecture should not only function 
+                efficiently but also evoke emotion and create a lasting spatial experience.
+              </p>
+            </div>
+            <div className="mt-10">
+              <Link
+                href="/studio"
+                className="group relative inline-block text-sm font-medium uppercase tracking-widest px-6 py-3 border-2 border-black transition-all duration-500 overflow-hidden"
+                style={{
+                  background: 'linear-gradient(90deg, #F0F0F0 0%, #E8E8E8 100%)',
+                }}
+              >
+                <span className="relative z-10 flex items-center gap-2 group-hover:text-white">
+                  Learn More
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                </span>
+                <div className="absolute inset-0 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              </Link>
+            </div>
           </div>
-          <div className="mt-8">
-            <Link
-              href="/studio"
-              className="inline-block text-sm font-medium uppercase tracking-wide border-b-2 border-black hover:border-gray-400 transition-colors"
+          <div style={{ animation: 'slideInRight 0.8s ease-out' }}>
+            <div
+              className="relative aspect-[4/3] bg-gradient-to-br from-gray-300 via-gray-250 to-gray-300 border-2 border-gray-400 overflow-hidden group cursor-pointer"
+              style={{
+                boxShadow: '0 20px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5)'
+              }}
             >
-              Learn More →
-            </Link>
-          </div>
-        </div>
-        <div
-          className="relative aspect-[4/3] bg-gray-200"
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-gray-400">Studio Image Placeholder</span>
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-gray-500 text-center px-4">
+                  <div className="text-4xl mb-2">🏗️</div>
+                  Studio Image Placeholder
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
