@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Section } from '../Section';
+import { StudioCarousel } from '../StudioCarousel';
 
 export function StudioIntro() {
   return (
@@ -44,18 +45,12 @@ export function StudioIntro() {
           </div>
           <div style={{ animation: 'slideInRight 0.8s ease-out' }}>
             <div
-              className="relative aspect-[4/3] bg-gradient-to-br from-gray-300 via-gray-250 to-gray-300 border-2 border-gray-400 overflow-hidden group cursor-pointer"
+              className="relative aspect-[4/3] overflow-hidden"
               style={{
-                boxShadow: '0 20px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5)'
+                boxShadow: '0 20px 40px rgba(0,0,0,0.15)'
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-gray-500 text-center px-4">
-                  <div className="text-4xl mb-2">🏗️</div>
-                  Studio Image Placeholder
-                </span>
-              </div>
+              <StudioCarousel />
             </div>
           </div>
         </div>

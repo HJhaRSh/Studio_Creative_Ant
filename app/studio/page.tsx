@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Section } from '@/components/Section';
 import Image from 'next/image';
+import { StudioGrid } from '@/components/StudioGrid';
 
 export default function StudioPage() {
   const services = ['Architecture', 'Interior Design', 'Landscape Design'];
@@ -18,7 +19,7 @@ export default function StudioPage() {
 
   return (
     <>
-      <Section className="pt-32">
+      <Section className="pt-32 pb-8 md:pb-12">
         <div className="max-w-4xl">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -50,34 +51,11 @@ export default function StudioPage() {
         </div>
       </Section>
 
-      <Section className="bg-white pt-0">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative aspect-[4/3] bg-gray-100"
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-gray-400">Studio Image 1</span>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative aspect-[4/3] bg-gray-100"
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-gray-400">Studio Image 2</span>
-            </div>
-          </motion.div>
-        </div>
+      <Section className="bg-white py-0 md:py-0 pb-16 md:pb-20">
+        <StudioGrid />
       </Section>
 
-      <Section className="bg-gray-50">
+      <Section className="bg-gray-50 pt-0 md:pt-0">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <motion.div
