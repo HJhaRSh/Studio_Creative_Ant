@@ -25,31 +25,28 @@ export function Gallery({ images, projectName }: GalleryProps) {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {images.map((image, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="relative aspect-[4/3] overflow-hidden bg-gray-100 cursor-pointer group"
+            transition={{ duration: 0.6, delay: index * 0.05 }}
+            className="relative aspect-[4/3] overflow-hidden group cursor-pointer"
+            style={{
+              boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+            }}
             onClick={() => setSelectedImage(index)}
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.4 }}
-              className="h-full w-full"
-            >
-              <Image
-                src={image}
-                alt={`${projectName || 'Project'} image ${index + 1}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </motion.div>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+            <Image
+              src={image}
+              alt={`${projectName || 'Project'} image ${index + 1}`}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
           </motion.div>
         ))}
       </div>

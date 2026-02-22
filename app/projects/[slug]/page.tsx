@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { getProjectBySlug } from '@/lib/data';
 import { Gallery } from '@/components/Gallery';
 import { Section } from '@/components/Section';
@@ -18,15 +17,16 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     notFound();
   }
 
-  // Placeholder images - replace with actual project images from database
-  const projectImages = project.cover_image
-    ? [project.cover_image, project.cover_image, project.cover_image]
-    : [];
+  const projectImages = project.images && project.images.length > 0
+    ? project.images
+    : project.cover_image
+      ? [project.cover_image]
+      : [];
 
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-32 pb-16">
+      <section className="pt-32 pb-6">
         <Container>
           <div className="mb-8">
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
@@ -45,12 +45,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
                   <p className="mt-1 font-medium">{project.year}</p>
                 </div>
               )}
-              {project.client && (
-                <div>
-                  <span className="text-gray-500 uppercase tracking-wide">Client</span>
-                  <p className="mt-1 font-medium">{project.client}</p>
-                </div>
-              )}
               {project.area && (
                 <div>
                   <span className="text-gray-500 uppercase tracking-wide">Area</span>
@@ -59,38 +53,31 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
               )}
             </div>
           </div>
-          {project.cover_image && (
-            <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
-              <Image
-                src={project.cover_image}
-                alt={project.name}
-                fill
-                className="object-cover"
-                sizes="100vw"
-                priority
-              />
-            </div>
-          )}
         </Container>
       </section>
 
-      {/* Description Section */}
-      {project.description && (
-        <Section className="bg-white">
-          <div className="max-w-3xl">
-            <h2 className="font-heading text-3xl font-bold mb-6">About This Project</h2>
-            <div className="prose prose-lg max-w-none text-gray-700">
-              <p>{project.description}</p>
-            </div>
-          </div>
-        </Section>
-      )}
-
       {/* Gallery Section */}
       {projectImages.length > 0 && (
-        <Section className="bg-gray-50">
-          <Gallery images={projectImages} projectName={project.name} />
-        </Section>
+        <section className="py-8 px-4 md:px-8 lg:px-12 xl:px-16 w-full">
+          <div className="w-full">
+            <Gallery images={projectImages} projectName={project.name} />
+          </div>
+        </section>
+      )}
+
+      {/* Description Section */}
+      {project.description && (
+        <section className="py-16 px-4 md:px-8 lg:px-12 xl:px-16 w-full bg-white">
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-1 h-10 bg-gradient-to-b from-black to-transparent"></div>
+              <h2 className="font-heading text-4xl font-bold uppercase tracking-tight">About This Project</h2>
+            </div>
+            <p className="font-body text-base leading-relaxed text-gray-700 text-justify">
+              {project.description}
+            </p>
+          </div>
+        </section>
       )}
     </>
   );

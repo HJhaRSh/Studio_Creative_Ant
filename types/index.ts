@@ -8,6 +8,7 @@ export interface Project {
   client: string | null;
   area: string | null;
   cover_image: string | null;
+  images: string[];
   status?: string;
   created_at: string;
 }

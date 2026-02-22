@@ -1,115 +1,153 @@
 import { Project, TeamMember, Award } from '@/types';
+import { client } from './sanity';
+import { urlFor } from './sanity';
+
+/* =========================
+   PROJECTS (FROM SANITY)
+========================= */
+
+const DEMO_PROJECTS: Project[] = [
+  {
+    id: '1',
+    name: 'Brick Jaali House',
+    slug: 'brick-jaali-house',
+    description: "A residence reflecting the studio's philosophy using sustainable materials and innovative spatial arrangements.",
+    location: 'Ahmednagar',
+    year: 2024,
+    client: 'Private Client',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    status: 'Ongoing',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    name: 'Dhansari Residence',
+    slug: 'dhansari-residence',
+    description: 'Minimalist residence emphasizing decluttering, seamless finishes, and emotional detachment from possessions.',
+    location: 'Chhatrapati Sambhajinagar',
+    year: 2024,
+    client: 'Private Client',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    name: 'Pathak Residence',
+    slug: 'pathak-residence',
+    description: 'Modern residential project focusing on spatial clarity.',
+    location: 'Ahmednagar',
+    year: 2024,
+    client: 'Private Client',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    status: 'Ongoing',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    name: 'Parampara Restaurant',
+    slug: 'parampara-restaurant',
+    description: 'Renovation project focusing on spatial alignment and social interaction.',
+    location: 'Ahmednagar',
+    year: 2023,
+    client: 'Commercial',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '5',
+    name: 'Priyadarshini Pre School',
+    slug: 'priyadarshini-pre-school',
+    description: 'Educational space designed for interactive learning.',
+    location: 'Pune',
+    year: 2024,
+    client: 'Educational',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    status: 'Ongoing',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '6',
+    name: 'House of Skylight',
+    slug: 'house-of-skylight',
+    description: 'Exploring natural light and volume in residential architecture.',
+    location: 'Dhondgaon',
+    year: 2024,
+    client: 'Private Client',
+    area: null,
+    cover_image: '/placeholder-project.jpg',
+    images: [],
+    status: 'Ongoing',
+    created_at: new Date().toISOString(),
+  },
+];
 
 export const getProjects = async (): Promise<Project[]> => {
-  return [
-    {
-      id: '1',
-      name: 'Brick Jaali House',
-      slug: 'brick-jaali-house',
-      description: 'A residence reflecting the studio’s philosophy using sustainable materials and innovative spatial arrangements.',
-      location: 'Ahmednagar',
-      year: 2024,
-      client: 'Private Client',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      status: 'Ongoing',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      name: 'Dhansari Residence',
-      slug: 'dhansari-residence',
-      description: 'Minimalist residence emphasizing decluttering, seamless finishes, and emotional detachment from possessions.',
-      location: 'Chhatrapati Sambhajinagar',
-      year: 2024,
-      client: 'Private Client',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '3',
-      name: 'Pathak Residence',
-      slug: 'pathak-residence',
-      description: 'Modern residential project focusing on spatial clarity.',
-      location: 'Ahmednagar',
-      year: 2024,
-      client: 'Private Client',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      status: 'Ongoing',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '4',
-      name: 'Parampara Restaurant',
-      slug: 'parampara-restaurant',
-      description: 'Renovation project focusing on spatial alignment and social interaction.',
-      location: 'Ahmednagar',
-      year: 2023,
-      client: 'Commercial',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '5',
-      name: 'Priyadarshini Pre School',
-      slug: 'priyadarshini-pre-school',
-      description: 'Educational space designed for interactive learning.',
-      location: 'Pune',
-      year: 2024,
-      client: 'Educational',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      status: 'Ongoing',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '6',
-      name: 'House of Skylight',
-      slug: 'house-of-skylight',
-      description: 'Exploring natural light and volume in residential architecture.',
-      location: 'Dhondgaon',
-      year: 2024,
-      client: 'Private Client',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      status: 'Ongoing',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '7',
-      name: 'Ghorpade House',
-      slug: 'ghorpade-house',
-      description: 'Contemporary living spaces integrated with nature.',
-      location: 'Ahmednagar',
-      year: 2024,
-      client: 'Private Client',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      status: 'Ongoing',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '8',
-      name: 'Affordable Housing Project',
-      slug: 'affordable-housing-project',
-      description: 'Low-cost housing designed with passive cooling and sustainable design principles.',
-      location: 'Ahmednagar',
-      year: 2023,
-      client: 'Development',
-      area: null,
-      cover_image: '/placeholder-project.jpg',
-      created_at: new Date().toISOString(),
-    },
-  ];
+  try {
+    const sanityProjects = await client.fetch(`
+      *[_type == "project"]{
+        _id,
+        title,
+        description,
+        location,
+        year,
+        status,
+        images,
+        _createdAt
+      }
+    `);
+
+    if (sanityProjects && sanityProjects.length > 0) {
+      return sanityProjects
+        .map((project: any) => ({
+          id: project._id,
+          name: project.title,
+          slug: project.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, ''),
+          description: project.description,
+          location: project.location,
+          year: Number(project.year),
+          client: 'Private Client',
+          area: null,
+          cover_image: project.images?.[0]
+            ? urlFor(project.images[0]).url()
+            : '/placeholder-project.jpg',
+          images: project.images
+            ? project.images.map((img: any) => urlFor(img).url())
+            : [],
+          status: project.status
+            ? project.status.charAt(0).toUpperCase() + project.status.slice(1)
+            : undefined,
+          created_at: project._createdAt,
+        }))
+        .sort((a: Project, b: Project) => (b.year || 0) - (a.year || 0));
+    }
+  } catch (error) {
+    console.error('Error fetching projects from Sanity:', error);
+  }
+
+  return DEMO_PROJECTS.sort((a: Project, b: Project) => (b.year || 0) - (a.year || 0));
 };
 
 export const getProjectBySlug = async (slug: string): Promise<Project | null> => {
   const projects = await getProjects();
   return projects.find(p => p.slug === slug) || null;
 };
+
+/* =========================
+   TEAM (UNCHANGED)
+========================= */
 
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
   return [
@@ -137,6 +175,10 @@ export const getTeamMembers = async (): Promise<TeamMember[]> => {
     },
   ];
 };
+
+/* =========================
+   AWARDS (UNCHANGED)
+========================= */
 
 export const getAwards = async (): Promise<Award[]> => {
   return [
