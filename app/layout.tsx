@@ -5,14 +5,16 @@ import { Footer } from "@/components/Footer";
 import dynamic from "next/dynamic";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
-// Dynamically import the ant background to avoid SSR issues
-const AnimatedAntBackground = dynamic(
-  () => import("@/components/AnimatedAntBackground"),
+// Dynamically import the video loader to avoid SSR issues
+const VideoIntroBackground = dynamic(
+  () => import("@/components/VideoIntroBackground"),
   { 
     ssr: false,
     loading: () => null
   }
 );
+
+
 
 export const metadata: Metadata = {
   title: "Studio Creative Ant | Architecture & Design Practice",
@@ -30,10 +32,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="bg-white text-black relative" style={{ margin: 0, padding: 0 }}>
-        <Navbar />
-        <main className="relative z-10" style={{ position: 'relative', zIndex: 10 }}>{children}</main>
-        <Footer />
+      <body className="bg-white text-black relative" style={{ margin: 0, padding: 0, overflow: 'hidden' }}>
+        <VideoIntroBackground />
+        <div style={{ visibility: 'hidden' }}>
+          <Navbar />
+        </div>
+        <main className="relative z-10" style={{ position: 'relative', zIndex: 10, visibility: 'hidden' }}>{children}</main>
+        <div style={{ visibility: 'hidden' }}>
+          <Footer />
+        </div>
       </body>
     </html>
   );
