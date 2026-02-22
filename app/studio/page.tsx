@@ -19,13 +19,13 @@ export default function StudioPage() {
 
   return (
     <>
-      <Section className="pt-32 pb-8 md:pb-12">
+      <Section className="pt-24 md:pt-32 pb-0">
         <div className="max-w-4xl">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-heading text-5xl md:text-6xl font-bold mb-4"
+            className="font-heading text-5xl md:text-6xl font-bold mb-2"
           >
             Studio Creative Ant
           </motion.h1>
@@ -33,7 +33,7 @@ export default function StudioPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl text-gray-500 uppercase tracking-widest mb-12"
+            className="text-xl text-gray-500 uppercase tracking-widest mb-1"
           >
             The concept for better living
           </motion.p>
@@ -41,7 +41,7 @@ export default function StudioPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="prose prose-lg max-w-none text-gray-700 space-y-6 mb-12"
+            className="prose prose-lg max-w-none text-gray-700 space-y-6 mb-0"
           >
             <p>
               Studio Creative Ant actively engages in creating spaces that incorporate nature 
@@ -51,7 +51,7 @@ export default function StudioPage() {
         </div>
       </Section>
 
-      <Section className="bg-white py-0 md:py-0 pb-16 md:pb-20">
+      <Section className="py-0 -mt-32 md:-mt-40">
         <StudioGrid />
       </Section>
 
