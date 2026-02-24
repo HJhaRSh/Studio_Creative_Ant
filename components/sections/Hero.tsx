@@ -1,8 +1,32 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { Container } from '../Container';
 
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Wait for intro to finish before playing
+    const handleStartVideo = () => {
+      video.currentTime = 0;
+      video.play().catch(err => console.log("Hero video play failed:", err));
+    };
+
+    window.addEventListener('start-hero-video', handleStartVideo);
+    
+    // Initially pause it
+    video.pause();
+    video.currentTime = 0;
+
+    return () => {
+      window.removeEventListener('start-hero-video', handleStartVideo);
+    };
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-32 z-10 overflow-hidden" style={{ minHeight: '100vh', background: '#FFFFFF', boxShadow: '0 20px 60px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)', paddingBottom: '6rem' }}>
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.02) 0%, transparent 50%)' }}></div>
@@ -42,7 +66,7 @@ export function Hero() {
           </div>
           <div style={{ animation: 'slideInRight 0.8s ease-out', overflow: 'hidden' }}>
             <video
-              autoPlay
+              ref={videoRef}
               loop
               muted
               playsInline

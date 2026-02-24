@@ -7,65 +7,47 @@ export default function VideoIntroBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [videoOpacity, setVideoOpacity] = useState(1);
   const [isHidden, setIsHidden] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const FADE_START = 5.5;
+  const TRANSITION_START = 4.0;
   const VIDEO_DURATION = 6;
 
   useEffect(() => {
     const video = loaderVideoRef.current;
-    if (!video) {
-      console.log('Video ref not available');
-      return;
-    }
-
-    console.log('Setting up video event listeners');
+    if (!video) return;
 
     const handleTimeUpdate = () => {
       const currentTime = video.currentTime;
       
-      if (currentTime >= FADE_START) {
-        const fadeProgress = (currentTime - FADE_START) / (VIDEO_DURATION - FADE_START);
-        const opacity = Math.max(0, 1 - fadeProgress);
-        setVideoOpacity(opacity);
+      // Trigger smooth transition
+      if (currentTime >= TRANSITION_START && !isTransitioning) {
+        setIsTransitioning(true);
       }
     };
 
     const handleEnded = () => {
-      console.log('Video ended');
-      setVideoOpacity(0);
+      // Signal Hero video to start exactly at this moment
+      window.dispatchEvent(new CustomEvent('start-hero-video'));
+      
+      // Short delay to ensure hero video has rendered its first frame
       setTimeout(() => {
         setIsHidden(true);
-      }, 200);
+      }, 50);
     };
 
-    const handleLoadedMetadata = () => {
-      console.log('Video metadata loaded, duration:', video.duration);
-    };
-
-    const handlePlayStart = () => {
-      console.log('Video started playing');
-    };
-
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('ended', handleEnded);
-    video.addEventListener('play', handlePlayStart);
 
     return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('play', handlePlayStart);
     };
-  }, []);
+  }, [isTransitioning]);
 
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
-      console.log('Fallback timeout triggered');
-      setVideoOpacity(0);
-      setTimeout(() => {
-        setIsHidden(true);
-      }, 200);
+      window.dispatchEvent(new CustomEvent('start-hero-video'));
+      setIsHidden(true);
     }, (VIDEO_DURATION + 0.5) * 1000);
 
     return () => clearTimeout(fallbackTimer);
@@ -73,7 +55,6 @@ export default function VideoIntroBackground() {
 
   useEffect(() => {
     if (isHidden) {
-      console.log('Unhiding content');
       document.documentElement.style.overflow = 'auto';
       document.body.style.overflow = 'auto';
       
@@ -81,14 +62,69 @@ export default function VideoIntroBackground() {
       if (navbar) navbar.style.visibility = 'visible';
       
       const main = document.querySelector('main');
-      if (main) main.style.visibility = 'visible';
+      if (main) {
+        main.style.visibility = 'visible';
+        main.style.opacity = '1';
+      }
       
       const footer = document.querySelector('footer');
       if (footer) footer.style.visibility = 'visible';
     }
   }, [isHidden]);
 
+  // Proactively unhide content slightly before the transition finishes
+  useEffect(() => {
+    const unhideTimer = setTimeout(() => {
+      const navbar = document.querySelector('nav');
+      if (navbar) navbar.style.visibility = 'visible';
+      
+      const main = document.querySelector('main');
+      if (main) {
+        main.style.visibility = 'visible';
+        main.style.opacity = '1';
+      }
+    }, (VIDEO_DURATION - 0.5) * 1000);
+
+    return () => clearTimeout(unhideTimer);
+  }, []);
+
   if (isHidden) return null;
+
+  // Exact matching logic for Hero video
+  // Container: max-w-7xl (1280px), px-12 (96px padding)
+  // Grid: 2 columns, gap-12 (48px)
+  const contentWidth = 'min(100vw, 1280px) - 96px';
+  const colWidth = `calc((${contentWidth} - 48px) / 2)`;
+  const colHeight = `calc(${colWidth} * 8.5 / 16)`;
+  
+  // Center of the second column
+  // (50% of screen) + (24px for half gap) + (half of colWidth)
+  const containerLeft = `calc(50% + 24px + (${contentWidth} - 48px) / 4)`;
+  const containerTop = 'calc(50% + 16px)'; // Shifted by (128px top - 96px bottom) / 2
+
+  const containerTargetStyles: React.CSSProperties = isTransitioning ? {
+    width: colWidth,
+    height: colHeight,
+    top: containerTop,
+    left: containerLeft,
+    transform: 'translate(-50%, -50%)',
+  } : {
+    width: '100vw',
+    height: '100vh',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  };
+
+  const videoTargetStyles: React.CSSProperties = isTransitioning ? {
+    marginLeft: '-80px',
+    width: 'calc(100% + 80px)',
+    height: '100%',
+  } : {
+    marginLeft: '0px',
+    width: '100%',
+    height: '100%',
+  };
 
   return (
     <div
@@ -99,31 +135,37 @@ export default function VideoIntroBackground() {
         zIndex: 9999,
         backgroundColor: '#FFFFFF',
         overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        pointerEvents: 'none',
       }}
     >
-      <video
-        ref={loaderVideoRef}
+      <div
         style={{
           position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
+          overflow: 'hidden',
           backgroundColor: '#FFFFFF',
-          opacity: videoOpacity,
-          transition: 'opacity 0.1s linear',
+          transition: 'all 2s cubic-bezier(0.16, 1, 0.3, 1)',
+          ...containerTargetStyles,
         }}
-        muted
-        playsInline
-        autoPlay
-        preload="auto"
       >
-        <source src="/loader.mp4" type="video/mp4" />
-        <source src="/loader.webm" type="video/webm" />
-      </video>
+        <video
+          ref={loaderVideoRef}
+          style={{
+            position: 'absolute',
+            objectFit: 'cover',
+            backgroundColor: '#FFFFFF',
+            transition: 'all 2s cubic-bezier(0.16, 1, 0.3, 1)',
+            opacity: videoOpacity,
+            ...videoTargetStyles,
+          }}
+          muted
+          playsInline
+          autoPlay
+          preload="auto"
+        >
+          <source src="/loader.mp4" type="video/mp4" />
+          <source src="/loader.webm" type="video/webm" />
+        </video>
+      </div>
     </div>
   );
 }
