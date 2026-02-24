@@ -65,7 +65,7 @@ export function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin size={16} className="mt-1 flex-shrink-0" />
                 <span>
-                  Shop no. 22, M.R Trade Centre, Maliwada,<br />
+                  22, M.R Trade Centre, Maliwada,<br />
                   Ahmednagar, Maharashtra, India
                 </span>
               </li>

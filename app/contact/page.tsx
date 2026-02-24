@@ -61,7 +61,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold mb-1 uppercase text-sm tracking-wide">Address</h3>
                     <p className="text-gray-600">
-                      Shop no. 22, M.R Trade Centre,
+                      22, M.R Trade Centre,
                       <br />
                       Maliwada, Ahmednagar,
                       <br />
