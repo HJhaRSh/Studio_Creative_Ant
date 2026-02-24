@@ -23,13 +23,13 @@ export default function ContactPage() {
 
   return (
     <>
-      <Section className="pt-32">
+      <Section className="!pt-20 !pb-12">
         <div className="max-w-4xl">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-heading text-5xl md:text-6xl font-bold mb-8"
+            className="font-heading text-5xl md:text-6xl font-bold mb-4"
           >
             Contact
           </motion.h1>
@@ -37,14 +37,14 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-gray-600 text-lg mb-12"
+            className="text-gray-600 text-lg mb-0"
           >
             Get in touch with us to discuss your next project or learn more about our services.
           </motion.p>
         </div>
       </Section>
 
-      <Section className="bg-gray-50">
+      <Section className="bg-gray-50 !pt-16">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Information */}
@@ -167,19 +167,20 @@ export default function ContactPage() {
         </Container>
       </Section>
 
-      {/* Map Placeholder */}
-      <Section className="bg-white">
+      {/* Map Section */}
+      <Section className="bg-white !pt-0">
         <Container>
-          <div className="relative aspect-[16/9] bg-gray-100">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-400">Google Maps Integration</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Add your Google Maps API key to display the map
-                </p>
-              </div>
-            </div>
+          <div className="relative aspect-[16/9] bg-gray-100 shadow-lg border border-gray-100">
+            <iframe
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Studio+Creative+Ant,M.R.+Trade+Centre,Ahmednagar,Maharashtra&output=embed"
+              title="Studio Creative Ant Location"
+            ></iframe>
           </div>
         </Container>
       </Section>

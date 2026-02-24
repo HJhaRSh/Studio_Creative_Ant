@@ -1,6 +1,13 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
+
+// Set initial state for intro
+if (typeof window !== 'undefined') {
+  // If not already set, assume intro is active until proven otherwise
+  if ((window as any).isIntroActive === undefined) {
+    (window as any).isIntroActive = true;
+  }
+}
 
 export default function VideoIntroBackground() {
   const loaderVideoRef = useRef<HTMLVideoElement>(null);
@@ -14,6 +21,9 @@ export default function VideoIntroBackground() {
   const VIDEO_DURATION = 6;
 
   useEffect(() => {
+    // Set global flag that intro is active
+    (window as any).isIntroActive = true;
+    
     const video = loaderVideoRef.current;
     if (!video) return;
 
@@ -39,7 +49,9 @@ export default function VideoIntroBackground() {
 
     const handleEnded = () => {
       // Signal Hero video to start
+      (window as any).isIntroActive = false;
       window.dispatchEvent(new CustomEvent('start-hero-video'));
+      sessionStorage.setItem('intro-finished', 'true');
       
       // Fade out the intro video smoothly while hero video starts
       setVideoOpacity(0);
@@ -61,7 +73,9 @@ export default function VideoIntroBackground() {
 
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
+      (window as any).isIntroActive = false;
       window.dispatchEvent(new CustomEvent('start-hero-video'));
+      sessionStorage.setItem('intro-finished', 'true');
       setVideoOpacity(0);
       setTimeout(() => {
         setIsHidden(true);

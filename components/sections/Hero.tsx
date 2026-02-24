@@ -20,9 +20,17 @@ export function Hero() {
 
     window.addEventListener('start-hero-video', handleStartVideo);
     
-    // Initially pause it
-    video.pause();
-    video.currentTime = 0;
+    // If intro already finished or not active (e.g. navigating back from another page), play immediately
+    const isIntroActive = (window as any).isIntroActive;
+    const introFinished = sessionStorage.getItem('intro-finished') === 'true';
+
+    if (!isIntroActive || introFinished) {
+      video.play().catch(err => console.log("Hero video play failed:", err));
+    } else {
+      // Initially pause it if intro is still running
+      video.pause();
+      video.currentTime = 0;
+    }
 
     return () => {
       window.removeEventListener('start-hero-video', handleStartVideo);
