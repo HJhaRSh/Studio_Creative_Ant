@@ -8,6 +8,7 @@ export default function VideoIntroBackground() {
   const [videoOpacity, setVideoOpacity] = useState(1);
   const [isHidden, setIsHidden] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [targetRect, setTargetRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
   const TRANSITION_START = 4.0;
   const VIDEO_DURATION = 6;
@@ -21,6 +22,17 @@ export default function VideoIntroBackground() {
       
       // Trigger smooth transition
       if (currentTime >= TRANSITION_START && !isTransitioning) {
+        // Measure target position just before transition starts
+        const target = document.getElementById('hero-video-container');
+        if (target) {
+          const rect = target.getBoundingClientRect();
+          setTargetRect({
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height
+          });
+        }
         setIsTransitioning(true);
       }
     };
@@ -90,23 +102,12 @@ export default function VideoIntroBackground() {
 
   if (isHidden) return null;
 
-  // Exact matching logic for Hero video
-  // Container: max-w-7xl (1280px), px-12 (96px padding)
-  // Grid: 2 columns, gap-12 (48px)
-  const contentWidth = 'min(100vw, 1280px) - 96px';
-  const colWidth = `calc((${contentWidth} - 48px) / 2)`;
-  const colHeight = `calc(${colWidth} * 8.5 / 16)`;
-  
-  // Center of the second column
-  // (50% of screen) + (24px for half gap) + (half of colWidth)
-  const containerLeft = `calc(50% + 24px + (${contentWidth} - 48px) / 4)`;
-  const containerTop = 'calc(50% + 16px)'; // Shifted by (128px top - 96px bottom) / 2
-
-  const containerTargetStyles: React.CSSProperties = isTransitioning ? {
-    width: colWidth,
-    height: colHeight,
-    top: containerTop,
-    left: containerLeft,
+  // Final style after transition
+  const containerTargetStyles: React.CSSProperties = isTransitioning && targetRect ? {
+    width: targetRect.width,
+    height: targetRect.height,
+    top: targetRect.top + targetRect.height / 2,
+    left: targetRect.left + targetRect.width / 2,
     transform: 'translate(-50%, -50%)',
   } : {
     width: '100vw',
