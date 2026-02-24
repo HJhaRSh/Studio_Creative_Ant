@@ -64,7 +64,7 @@ export function Hero() {
               </a>
             </div>
           </div>
-          <div id="hero-video-container" style={{ animation: 'slideInRight 0.8s ease-out', overflow: 'hidden' }}>
+          <div id="hero-video-container" style={{ overflow: 'hidden' }}>
             <video
               ref={videoRef}
               loop

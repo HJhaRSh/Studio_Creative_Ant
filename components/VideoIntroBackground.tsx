@@ -9,9 +9,17 @@ export default function VideoIntroBackground() {
   const [isHidden, setIsHidden] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [targetRect, setTargetRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const TRANSITION_START = 4.0;
   const VIDEO_DURATION = 6;
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 1024);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const video = loaderVideoRef.current;
@@ -22,7 +30,6 @@ export default function VideoIntroBackground() {
       
       // Trigger smooth transition
       if (currentTime >= TRANSITION_START && !isTransitioning) {
-        // Measure target position just before transition starts
         const target = document.getElementById('hero-video-container');
         if (target) {
           const rect = target.getBoundingClientRect();
@@ -38,13 +45,16 @@ export default function VideoIntroBackground() {
     };
 
     const handleEnded = () => {
-      // Signal Hero video to start exactly at this moment
+      // Signal Hero video to start
       window.dispatchEvent(new CustomEvent('start-hero-video'));
       
-      // Short delay to ensure hero video has rendered its first frame
+      // Fade out the intro video smoothly while hero video starts
+      setVideoOpacity(0);
+      
+      // Completely hide after fade finishes
       setTimeout(() => {
         setIsHidden(true);
-      }, 50);
+      }, 500);
     };
 
     video.addEventListener('timeupdate', handleTimeUpdate);
@@ -59,7 +69,10 @@ export default function VideoIntroBackground() {
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
       window.dispatchEvent(new CustomEvent('start-hero-video'));
-      setIsHidden(true);
+      setVideoOpacity(0);
+      setTimeout(() => {
+        setIsHidden(true);
+      }, 500);
     }, (VIDEO_DURATION + 0.5) * 1000);
 
     return () => clearTimeout(fallbackTimer);
@@ -84,7 +97,7 @@ export default function VideoIntroBackground() {
     }
   }, [isHidden]);
 
-  // Proactively unhide content slightly before the transition finishes
+  // Reveal content before the intro video ends
   useEffect(() => {
     const unhideTimer = setTimeout(() => {
       const navbar = document.querySelector('nav');
@@ -95,7 +108,7 @@ export default function VideoIntroBackground() {
         main.style.visibility = 'visible';
         main.style.opacity = '1';
       }
-    }, (VIDEO_DURATION - 0.5) * 1000);
+    }, (VIDEO_DURATION - 0.8) * 1000);
 
     return () => clearTimeout(unhideTimer);
   }, []);
@@ -109,6 +122,7 @@ export default function VideoIntroBackground() {
     top: targetRect.top + targetRect.height / 2,
     left: targetRect.left + targetRect.width / 2,
     transform: 'translate(-50%, -50%)',
+    boxShadow: '0 0 0 1px white', // Prevent pixel gaps
   } : {
     width: '100vw',
     height: '100vh',
@@ -118,8 +132,8 @@ export default function VideoIntroBackground() {
   };
 
   const videoTargetStyles: React.CSSProperties = isTransitioning ? {
-    marginLeft: '-80px',
-    width: 'calc(100% + 80px)',
+    marginLeft: isMobile ? '0px' : '-80px',
+    width: isMobile ? '100%' : 'calc(100% + 80px)',
     height: '100%',
   } : {
     marginLeft: '0px',
@@ -137,6 +151,8 @@ export default function VideoIntroBackground() {
         backgroundColor: '#FFFFFF',
         overflow: 'hidden',
         pointerEvents: 'none',
+        opacity: videoOpacity,
+        transition: 'opacity 0.5s ease-out',
       }}
     >
       <div
@@ -155,7 +171,6 @@ export default function VideoIntroBackground() {
             objectFit: 'cover',
             backgroundColor: '#FFFFFF',
             transition: 'all 2s cubic-bezier(0.16, 1, 0.3, 1)',
-            opacity: videoOpacity,
             ...videoTargetStyles,
           }}
           muted
