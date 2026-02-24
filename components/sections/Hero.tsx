@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { Container } from '../Container';
+import { ArchitecturalBackground } from '../ArchitecturalBackground';
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -38,9 +39,10 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-32 z-10 overflow-hidden" style={{ minHeight: '100vh', background: '#FFFFFF', boxShadow: '0 20px 60px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)', paddingBottom: '6rem' }}>
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.02) 0%, transparent 50%)' }}></div>
-      <Container>
+    <section className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden" style={{ minHeight: '100vh', background: '#FFFFFF', boxShadow: '0 20px 60px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)' }}>
+      <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(0,0,0,0.02) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.02) 0%, transparent 50%)' }}></div>
+      <ArchitecturalBackground />
+      <Container className="pt-32 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-20">
           <div className="text-left" style={{ animation: 'slideInLeft 0.8s ease-out' }}>
             <div className="relative mb-6">
@@ -74,19 +76,30 @@ export function Hero() {
               </a>
             </div>
           </div>
-          <div id="hero-video-container" className="relative" style={{ overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
+          <div id="hero-video-container" className="relative group" style={{ 
+            overflow: 'hidden', 
+            backgroundColor: 'transparent',
+          }}>
+            {/* Subtle gray glow/gradient behind the video */}
+            <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ 
+              background: 'radial-gradient(circle at center, rgba(0,0,0,0.08) 0%, transparent 70%)',
+              filter: 'blur(40px)'
+            }}></div>
+            
             <video
               ref={videoRef}
               loop
               muted
               playsInline
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover relative z-10"
               style={{
                 aspectRatio: '16/8.5',
                 marginLeft: '-80px',
                 width: 'calc(100% + 120px)', // Increased to ensure coverage with margin
                 objectPosition: 'center 50%',
-                backgroundColor: '#FFFFFF'
+                backgroundColor: 'transparent',
+                maskImage: 'radial-gradient(ellipse 70% 85% at center, black 40%, transparent 95%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 70% 85% at center, black 40%, transparent 95%)'
               }}
             >
               <source src="/Ant_Video_Loop_Generation.mp4" type="video/mp4" />
