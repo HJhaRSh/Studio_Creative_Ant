@@ -12,8 +12,10 @@ export function Hero() {
 
     // Wait for intro to finish before playing
     const handleStartVideo = () => {
-      video.currentTime = 0;
-      video.play().catch(err => console.log("Hero video play failed:", err));
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(err => console.log("Hero video play failed:", err));
+      }
     };
 
     window.addEventListener('start-hero-video', handleStartVideo);
@@ -64,7 +66,7 @@ export function Hero() {
               </a>
             </div>
           </div>
-          <div id="hero-video-container" style={{ overflow: 'hidden' }}>
+          <div id="hero-video-container" className="relative" style={{ overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
             <video
               ref={videoRef}
               loop
@@ -74,7 +76,9 @@ export function Hero() {
               style={{
                 aspectRatio: '16/8.5',
                 marginLeft: '-80px',
-                objectPosition: 'center 50%'
+                width: 'calc(100% + 120px)', // Increased to ensure coverage with margin
+                objectPosition: 'center 50%',
+                backgroundColor: '#FFFFFF'
               }}
             >
               <source src="/Ant_Video_Loop_Generation.mp4" type="video/mp4" />

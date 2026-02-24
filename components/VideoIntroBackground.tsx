@@ -9,17 +9,9 @@ export default function VideoIntroBackground() {
   const [isHidden, setIsHidden] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [targetRect, setTargetRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   const TRANSITION_START = 4.0;
   const VIDEO_DURATION = 6;
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 1024);
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const video = loaderVideoRef.current;
@@ -30,6 +22,7 @@ export default function VideoIntroBackground() {
       
       // Trigger smooth transition
       if (currentTime >= TRANSITION_START && !isTransitioning) {
+        // Measure target position just before transition starts
         const target = document.getElementById('hero-video-container');
         if (target) {
           const rect = target.getBoundingClientRect();
@@ -121,8 +114,7 @@ export default function VideoIntroBackground() {
     height: targetRect.height,
     top: targetRect.top + targetRect.height / 2,
     left: targetRect.left + targetRect.width / 2,
-    transform: 'translate(-50%, -50%)',
-    boxShadow: '0 0 0 1px white', // Prevent pixel gaps
+    transform: 'translate(-50%, -50%) scale(1.01)', // Slight scale to overlap and prevent black lines
   } : {
     width: '100vw',
     height: '100vh',
@@ -132,8 +124,8 @@ export default function VideoIntroBackground() {
   };
 
   const videoTargetStyles: React.CSSProperties = isTransitioning ? {
-    marginLeft: isMobile ? '0px' : '-80px',
-    width: isMobile ? '100%' : 'calc(100% + 80px)',
+    marginLeft: '-80px',
+    width: 'calc(100% + 120px)',
     height: '100%',
   } : {
     marginLeft: '0px',
