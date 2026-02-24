@@ -110,11 +110,12 @@ export default function VideoIntroBackground() {
 
   // Final style after transition
   const containerTargetStyles: React.CSSProperties = isTransitioning && targetRect ? {
-    width: targetRect.width,
-    height: targetRect.height,
+    width: targetRect.width + 4, // Slightly wider to ensure overlap
+    height: targetRect.height + 4, // Slightly taller to ensure overlap
     top: targetRect.top + targetRect.height / 2,
     left: targetRect.left + targetRect.width / 2,
-    transform: 'translate(-50%, -50%) scale(1.01)', // Slight scale to overlap and prevent black lines
+    transform: 'translate(-50%, -50%)',
+    boxShadow: '0 0 0 10px #FFFFFF', // Thick white shadow to mask any edges/lines
   } : {
     width: '100vw',
     height: '100vh',
@@ -125,12 +126,14 @@ export default function VideoIntroBackground() {
 
   const videoTargetStyles: React.CSSProperties = isTransitioning ? {
     marginLeft: '-80px',
-    width: 'calc(100% + 120px)',
-    height: '100%',
+    width: 'calc(100% + 140px)', // Extra width to be safe
+    height: '110%', // Extra height to be safe
+    top: '-5%', // Center the extra height
   } : {
     marginLeft: '0px',
     width: '100%',
     height: '100%',
+    top: '0%',
   };
 
   return (
